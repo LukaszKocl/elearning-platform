@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<H1>LOGOWANIE</H1>
+Wypełnij poniższy formularz, aby się zalogować
+
+{% if msg %}
+    {{ msg }}
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+            <div class="form-group">
+                {{ field.errors }}
+                {{ field.label_tag }} {{ field }}
+                {% if field.help_text %}
+                <p class="help">{{ field.help_text|safe }}</p>
+             {% endif %}
+            </div>
+        {% endfor %}
+    <button type="submit" class="btn btn-primary">Zaloguj</button>
+</form>
+
+    <button class="btn btn-primary"><a href="{% url 'registration' %}">Zarejestruj się</a></button>
+{% endblock %}

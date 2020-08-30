@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+    {% include "category_lists.html" %}
+{% endblock %}
+
+{% block content %}
+
+   <H2>Lista zamówień: </H2>
+    <div class="table-size">
+        <table class="table table-hover table-sm ">
+            <tr class="table-primary">
+                {% if superuser %}
+                    <td>Kursant</td>
+                {% endif %}
+                <td>Kategoria</td>
+                <td>Kurs</td>
+                <td>Cena brutto</td>
+                <td>Czy opłacony</td>
+                <td>Data dostępu</td>
+                {% if superuser %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            </tr>
+
+            {% for order in orders %}
+                <tr>
+                    {% if superuser %}
+                        <td>{{ order.user.first_name }} {{ order.user.last_name }}</td>
+                    {% endif %}
+                    <td>{{ order.course.category.name }}</td>
+                    <td>{{ order.course.name }}</td>
+                    <td>{{ order.gross_price }}</td>
+                    <td>
+                        {% if order.is_paid %}
+                            TAK
+                        {% else %}
+                            NIE
+                        {% endif %}
+                    </td>
+                    <td>{{ order.end_date|date:"Y-m-d"  }}</td>
+
+                    {% if superuser %}
+                        <td><button class="btn btn-secondary"><a href="{% url 'order-edit' order.id %}">Edycja</a></button></td>
+                        <td><button class="btn btn-danger"><a href="{% url 'order-delete' order.id %}">Usuń</a></button></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

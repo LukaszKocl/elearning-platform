@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+    {% if modules.count > 0 %}
+        {% for module in modules %}
+            <a href="{% url 'course-video' module.course_id module.id %}">{{ module.title }} </a><br>
+        {% endfor %}
+    {% else %}
+        Brak modułów do kursu
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+    <H1>Kurs - {{ course }}</H1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.errors }}
+                {{ field.label_tag }} {{ field }}
+                {% if field.help_text %}
+                <p class="help">{{ field.help_text|safe }}</p>
+             {% endif %}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary">{{ button_text }}</button>
+    </form>
+
+
+ {% if module %}
+    <video width='400' controls>
+        <source src="{{ MEDIA_URL }}{{module.file }}" type='video/mp4'>
+    </video>
+ {% endif %}
+
+{% endblock %}

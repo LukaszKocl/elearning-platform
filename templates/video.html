@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<video width='400' controls>
+<source src='{{ MEDIA_URL }}{{ file }}' type='video/mp4'>
+Twoja przeglądarka nie obsługuje wideo
+</video>
+
+
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+    {% include "category_lists.html" %}
+{% endblock %}
+
+{% block content %}
+   <H2>
+        {% if courses.count == 0  %}
+            Brak kursów
+        {% else %}
+            Lista kursów: {{ courses.0.category.name }}
+        {% endif %}
+   </H2>
+
+    {% if superuser %}
+        <table class="table-sm">
+            <tr>
+                <td> <button class="btn btn-primary"><a href="{% url 'category-edit' id_course %}">Edycja kategori</a></button></td>
+                <td><button class="btn btn-danger"> <a href="{% url 'category-delete' id_course %}">Usuń kategorię</a> </button> </button></td>
+            </tr>
+        </table>
+            <p></p>
+
+
+    {% endif %}
+
+    {% if courses.count > 0  %}
+        <div class="table-size">
+        <table class="table table-hover table-sm">
+           {% for course in courses %}
+               <tr>
+                <td><a href="{% url 'course-detail-list' course.id %}" class="course">{{ course.name }}</a></td>
+
+
+
+                    {% if group == 2 %}
+                        {% for tutor_course in tutor_courses %}
+                            {% if tutor_course.id == course.id %}
+                                <td><button class="btn btn-secondary"><a href="{% url 'course-detail-add' course.id %}">Dodaj moduł</a></button></td>
+                                <td><button class="btn btn-secondary"><a href="{% url 'course-edit' course.id %}">Edycja</a></button></td>
+                            {% endif %}
+                        {% endfor %}
+
+                    {% endif %}
+
+                    {% if superuser %}
+                        <td><button class="btn btn-secondary"><a href="{% url 'course-detail-add' course.id %}">Dodaj moduł</a></button></td>
+                        <td><button class="btn btn-secondary"><a href="{% url 'course-edit' course.id %}">Edycja</a></button></td>
+                        <td><button class="btn btn-danger"> <a href="{% url 'course-delete' course.id %}">Usuń</a></button></td>
+                    {% endif %}
+               </tr>
+            {% endfor %}
+        </table>
+        </div>
+    {% endif %}
+{% endblock %}

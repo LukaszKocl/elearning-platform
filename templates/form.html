@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+    {% include "category_lists.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="form-size">
+    <form method="post" >
+        {% csrf_token %}
+
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.errors }}
+                {{ field.label_tag }} {{ field }}
+                {% if field.help_text %}
+                <p class="help">{{ field.help_text|safe }}</p>
+             {% endif %}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary">{{ button_text }}</button>
+    </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+
+{% block sidebar %}
+    {% include "category_lists.html" %}
+{% endblock %}
+
+{% block content %}
+
+    {% if user.is_authenticated  %}
+        {% if group == 3 %}
+            <h1>Aktywowane szkolenia</h1>
+
+            {% if courses.count == 0 %}
+                <h2>Brak aktywowanych szkoleń</h2>
+            {% else %}
+                {% for course in courses %}
+                    <a href="{% url 'course-detail-list' course.id %}" class="course"> {{ course.category.name }} - {{ course.name }}</a><br>
+                {% endfor %}
+
+            {% endif %}
+
+        {% endif %}
+
+        {% if group == 2 %}
+            <button class="btn btn-primary"><a href="{% url 'course-add' %}">Dodaj kurs</a></button>
+        {% endif %}
+
+        {% if superuser %}
+           <p> <button class="btn btn-primary"><a href="{% url 'category-add' %}">Dodaj kategorię</a></button></p>
+            <button class="btn btn-primary"><a href="{% url 'course-add' %}">Dodaj kurs</a></button>
+        {% endif %}
+    {% else %}
+    <div class="image">
+            <div class="image-text">
+                <h2> Formalna edukacja ułatwi Ci życiowy start, <br>
+                samokształcenie może doprowdzić Cię do fortuny</h2>
+                <h3> Jim Rohn</h3>
+            </div>
+
+        </div>
+    {% endif %}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+

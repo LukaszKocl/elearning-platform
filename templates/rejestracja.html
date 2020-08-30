@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Utwórz konto</h1>
+  <p>Wypełnij poniższy formularz:</p>
+    <form method="post">
+        {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                {{ field.errors }}
+                {{ field.label_tag }} {{ field }}
+                {% if field.help_text %}
+                <p class="help">{{ field.help_text|safe }}</p>
+             {% endif %}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary">Utwórz konto</button>
+    </form>
+{% endblock %}

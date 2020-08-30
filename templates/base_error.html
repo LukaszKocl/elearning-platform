@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css"  href="{% static 'css/style.css' %}">
+    <title>Platforma elearning</title>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+    <a href="{%  url 'index' %}">Strona główna</a>
+
+
+        {% if group == 1 %}
+            <a href="{% url 'order-history-admin' %}">Historia zamówień</a>
+        {% elif group == 3 %}
+            <a href="{% url 'order-history-pupil' %}">Historia zamówień</a>
+        {% endif %}
+
+        {% if group == 2 %}
+            <a href="{% url 'category-add' %}">Dodaj Kategorię</a>
+            | <a href="{% url 'course-add' %}">Dodaj kurs</a>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}">Wyloguj</a>
+        {% else %}
+            <a href="{% url 'login' %}">Zaloguj</a>
+        {% endif %}
+    </div>
+</nav>
+<main >
+    <dvi class="error">
+        {% block content %}
+
+        {% endblock %}
+    </dvi>
+</main>
+<footer>
+STOPKA
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

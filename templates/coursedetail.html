@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+
+{% block sidebar %}
+    {% if modules.count > 0 %}
+        {% for module in modules %}
+            {% if order > 0 or superuser %}
+                <a href="{% url 'course-video' module.course_id module.id %}">{{ module.title }} </a>
+            {% elif group == 2 and tutor_course %}
+                <a href="{% url 'course-video' module.course_id module.id %}">{{ module.title }} </a>
+            {% else %}
+                {% if module.is_free %}
+                    <strong>{{ module.title }}</strong>
+                {% else %}
+                    {{module.title }}
+                {% endif %}
+            {% endif %}
+            <br>
+        {% endfor %}
+    {% else %}
+        Brak modułów do kursu
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if group == 1 or group == 2 %}
+        {% if video_number %}
+            <table class="table-sm">
+                <tr>
+                    <td><button class="btn btn-primary"><a href="{% url 'course-detail-edit' video_number.0.id %}">Edytuj</a></td>
+                    <td><button class="btn btn-danger"><a href="{% url 'course-detail-delete' video_number.0.id %}">Usuń</a> </button></td>
+                </tr>
+            </table>
+            <p></p>
+        {% endif %}
+    {% endif %}
+
+    <H1> Kurs: {{ modules.0.course.name }}</H1>
+    <H2> Moduł: {{ video_number.0.title }}</H2>
+    <p>{{ modules.0.course.description }}</p>
+
+    {% if group == 3 and order == 0 %}
+        <p><button class="btn btn-primary"><a href="{% url 'course-activate' modules.0.course.id %}">AKTYWUJ</a></button></p>
+    {% endif %}
+
+            {% if order > 0 or superuser %}
+                <video width='400' controls>
+
+                    {% if video_number %}
+                        <source src='{{ MEDIA_URL }}{{ video_number.0.file }}' type='video/mp4'>
+                    {% else %}
+                        <source src='{{ MEDIA_URL }}{{ modules.0.file }}' type='video/mp4'>
+                    {% endif %}
+
+                    Twoja przeglądarka nie obsługuje wideo
+                </video>
+            {% elif group == 2 %}
+                <video width='400' controls>
+                    {% if tutor_course %}
+                        <source src='{{ MEDIA_URL }}{{ video_number.0.file }}' type='video/mp4'>
+                    {% else %}
+                        <source src='{{ MEDIA_URL }}{{ modules.0.file }}' type='video/mp4'>
+                    {% endif %}
+
+                    Twoja przeglądarka nie obsługuje wideo
+                </video>
+            {% else %}
+                {% for module in modules %}
+                    {% if module.is_free %}
+                        <video width='400' controls>
+                            <source src='{{ MEDIA_URL }}{{ module.file }}' type='video/mp4'>
+                            Twoja przeglądarka nie obsługuje wideo
+                        </video>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+{% endblock %}
+
+
